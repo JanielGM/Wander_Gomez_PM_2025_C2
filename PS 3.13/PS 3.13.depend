@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1749189587 source:c:\users\wande\downloads\trabajo clase progra\tarea 3\programss-wander\ps 3.13\main.c
+	<stdio.h>
+	<stdbool.h>
+	<math.h>
+
