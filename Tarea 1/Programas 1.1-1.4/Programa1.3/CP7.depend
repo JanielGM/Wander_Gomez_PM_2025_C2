@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1749603054 source:c:\users\wande\downloads\itla\lenguaje c\cp7\cp7\main.c
+	<stdio.h>
+	<stdlib.h>
+
