@@ -19,7 +19,8 @@ void menu_principal();
 
 
 // Definición de la estructura para el vehículo
-typedef struct {
+typedef struct
+{
     char placa[10];
     char marca[20];
     char modelo[20];
@@ -48,13 +49,15 @@ float costo_combustible_gasoil = 0.0;
 // --- Funciones de Utilidad ---
 
 // Se movió la definición de la función aquí
-void limpiar_buffer() {
+void limpiar_buffer()
+{
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
 // Función para limpiar la pantalla
-void limpiar_pantalla() {
+void limpiar_pantalla()
+{
 #ifdef _WIN32
     system("cls");
 #else
@@ -64,31 +67,38 @@ void limpiar_pantalla() {
 
 // --- Funciones de Gestión de Vehículos ---
 
-void guardar_datos_vehiculos() {
+void guardar_datos_vehiculos()
+{
     FILE *fp = fopen("vehiculos.dat", "wb");
-    if (fp == NULL) {
+    if (fp == NULL)
+    {
         printf("Error al guardar los datos.\n");
         return;
     }
     fwrite(&num_vehiculos, sizeof(int), 1, fp);
-    if (num_vehiculos > 0) {
+    if (num_vehiculos > 0)
+    {
         fwrite(vehiculos, sizeof(Vehiculo), num_vehiculos, fp);
     }
     fclose(fp);
     printf("Datos guardados correctamente.\n");
 }
 
-void cargar_datos_vehiculos() {
+void cargar_datos_vehiculos()
+{
     FILE *fp = fopen("vehiculos.dat", "rb");
-    if (fp == NULL) {
+    if (fp == NULL)
+    {
         printf("No se encontraron datos de vehiculos. Creando archivo nuevo.\n");
         return;
     }
 
     fread(&num_vehiculos, sizeof(int), 1, fp);
-    if (num_vehiculos > 0) {
+    if (num_vehiculos > 0)
+    {
         vehiculos = (Vehiculo*) malloc(num_vehiculos * sizeof(Vehiculo));
-        if (vehiculos == NULL) {
+        if (vehiculos == NULL)
+        {
             printf("Error de memoria al cargar los datos.\n");
             num_vehiculos = 0;
             fclose(fp);
@@ -101,7 +111,8 @@ void cargar_datos_vehiculos() {
     fclose(fp);
 }
 
-void crear_vehiculo() {
+void crear_vehiculo()
+{
     limpiar_pantalla();
     Vehiculo nuevo_vehiculo;
     printf("\n--- Crear Vehiculo ---\n");
@@ -157,7 +168,8 @@ void crear_vehiculo() {
 
     num_vehiculos++;
     vehiculos = (Vehiculo*) realloc(vehiculos, num_vehiculos * sizeof(Vehiculo));
-    if (vehiculos == NULL) {
+    if (vehiculos == NULL)
+    {
         printf("Error de memoria. Saliendo...\n");
         exit(1);
     }
@@ -166,12 +178,14 @@ void crear_vehiculo() {
     limpiar_buffer();
 }
 
-void borrar_vehiculo() {
+void borrar_vehiculo()
+{
     limpiar_pantalla();
     char placa_borrar[10];
     int i, encontrado = 0;
 
-    if (num_vehiculos == 0) {
+    if (num_vehiculos == 0)
+    {
         printf("No hay vehiculos para borrar.\n");
         return;
     }
@@ -182,10 +196,13 @@ void borrar_vehiculo() {
     fgets(placa_borrar, sizeof(placa_borrar), stdin);
     placa_borrar[strcspn(placa_borrar, "\n")] = 0;
 
-    for (i = 0; i < num_vehiculos; i++) {
-        if (strcmp(vehiculos[i].placa, placa_borrar) == 0) {
+    for (i = 0; i < num_vehiculos; i++)
+    {
+        if (strcmp(vehiculos[i].placa, placa_borrar) == 0)
+        {
             encontrado = 1;
-            for (int j = i; j < num_vehiculos - 1; j++) {
+            for (int j = i; j < num_vehiculos - 1; j++)
+            {
                 vehiculos[j] = vehiculos[j + 1];
             }
             num_vehiculos--;
@@ -194,17 +211,20 @@ void borrar_vehiculo() {
             break;
         }
     }
-    if (!encontrado) {
+    if (!encontrado)
+    {
         printf("Vehiculo con placa %s no encontrado.\n", placa_borrar);
     }
 }
 
-void modificar_vehiculo() {
+void modificar_vehiculo()
+{
     limpiar_pantalla();
     char placa_modificar[10];
     int i, encontrado = 0;
 
-    if (num_vehiculos == 0) {
+    if (num_vehiculos == 0)
+    {
         printf("No hay vehiculos para modificar.\n");
         return;
     }
@@ -215,8 +235,10 @@ void modificar_vehiculo() {
     fgets(placa_modificar, sizeof(placa_modificar), stdin);
     placa_modificar[strcspn(placa_modificar, "\n")] = 0;
 
-    for (i = 0; i < num_vehiculos; i++) {
-        if (strcmp(vehiculos[i].placa, placa_modificar) == 0) {
+    for (i = 0; i < num_vehiculos; i++)
+    {
+        if (strcmp(vehiculos[i].placa, placa_modificar) == 0)
+        {
             encontrado = 1;
             printf("Vehiculo encontrado. Ingrese los nuevos datos:\n");
             printf("Nuevo Costo de Gomas (actual: %.2f): ", vehiculos[i].costo_gomas);
@@ -230,19 +252,23 @@ void modificar_vehiculo() {
             break;
         }
     }
-    if (!encontrado) {
+    if (!encontrado)
+    {
         printf("Vehiculo con placa %s no encontrado.\n", placa_modificar);
     }
 }
 
-void listar_vehiculos() {
+void listar_vehiculos()
+{
     limpiar_pantalla();
-    if (num_vehiculos == 0) {
+    if (num_vehiculos == 0)
+    {
         printf("No hay vehiculos registrados.\n");
         return;
     }
     printf("\n--- Lista de Vehiculos ---\n");
-    for (int i = 0; i < num_vehiculos; i++) {
+    for (int i = 0; i < num_vehiculos; i++)
+    {
         printf("Vehiculo %d:\n", i + 1);
         printf("  Placa: %s\n", vehiculos[i].placa);
         printf("  Marca: %s\n", vehiculos[i].marca);
@@ -252,7 +278,8 @@ void listar_vehiculos() {
     }
 }
 
-void gestionar_costos_combustible() {
+void gestionar_costos_combustible()
+{
     limpiar_pantalla();
     printf("\n--- Gestion de Costos de Combustible ---\n");
     printf("Ingrese el costo por galon de Gasolina: ");
@@ -262,7 +289,8 @@ void gestionar_costos_combustible() {
     printf("Costos de combustible actualizados.\n");
 }
 
-void calcular_costo_viaje() {
+void calcular_costo_viaje()
+{
     limpiar_pantalla();
     char placa_viaje[10];
     int i, encontrado = 0;
@@ -270,7 +298,8 @@ void calcular_costo_viaje() {
     float costo_gomas_viaje, costo_seguro_viaje, costo_mantenimiento_viaje;
     float depreciacion_viaje, costo_total_viaje, costo_por_km;
 
-    if (num_vehiculos == 0) {
+    if (num_vehiculos == 0)
+    {
         printf("No hay vehiculos registrados para calcular viajes.\n");
         return;
     }
@@ -281,14 +310,17 @@ void calcular_costo_viaje() {
     fgets(placa_viaje, sizeof(placa_viaje), stdin);
     placa_viaje[strcspn(placa_viaje, "\n")] = 0;
 
-    for (i = 0; i < num_vehiculos; i++) {
-        if (strcmp(vehiculos[i].placa, placa_viaje) == 0) {
+    for (i = 0; i < num_vehiculos; i++)
+    {
+        if (strcmp(vehiculos[i].placa, placa_viaje) == 0)
+        {
             encontrado = 1;
             break;
         }
     }
 
-    if (!encontrado) {
+    if (!encontrado)
+    {
         printf("Vehiculo con placa %s no encontrado.\n", placa_viaje);
         return;
     }
@@ -301,11 +333,16 @@ void calcular_costo_viaje() {
     km_ciudad = km_viaje * (porcentaje_ciudad / 100.0);
     km_carretera = km_viaje - km_ciudad;
 
-    if (strcasecmp(vehiculos[i].tipo_combustible, "gasolina") == 0) {
+    if (strcasecmp(vehiculos[i].tipo_combustible, "gasolina") == 0)
+    {
         costo_combustible = (km_ciudad / vehiculos[i].km_x_galon_ciudad + km_carretera / vehiculos[i].km_x_galon_carretera) * costo_combustible_gasolina;
-    } else if (strcasecmp(vehiculos[i].tipo_combustible, "gasoil") == 0) {
+    }
+    else if (strcasecmp(vehiculos[i].tipo_combustible, "gasoil") == 0)
+    {
         costo_combustible = (km_ciudad / vehiculos[i].km_x_galon_ciudad + km_carretera / vehiculos[i].km_x_galon_carretera) * costo_combustible_gasoil;
-    } else {
+    }
+    else
+    {
         costo_combustible = 0;
         printf("Tipo de combustible no valido. No se puede calcular el costo de combustible.\n");
     }
@@ -331,9 +368,11 @@ void calcular_costo_viaje() {
 }
 
 // --- Menú principal ---
-void menu_principal() {
+void menu_principal()
+{
     int opcion;
-    do {
+    do
+    {
         limpiar_pantalla();
         printf("\n\n--- MENU PRINCIPAL ---\n");
         printf("1. Gestion de Vehiculos\n");
@@ -344,46 +383,51 @@ void menu_principal() {
         scanf("%d", &opcion);
         limpiar_buffer();
 
-        switch (opcion) {
-            case 1:
-                limpiar_pantalla();
-                printf("\n--- GESTION DE VEHICULOS ---\n");
-                printf("1. Crear Vehiculo\n");
-                printf("2. Borrar Vehiculo\n");
-                printf("3. Modificar Vehiculo\n");
-                printf("4. Listar Vehiculos\n");
-                printf("Seleccione una opcion: ");
-                scanf("%d", &opcion);
-                limpiar_buffer();
-                if (opcion == 1) crear_vehiculo();
-                else if (opcion == 2) borrar_vehiculo();
-                else if (opcion == 3) modificar_vehiculo();
-                else if (opcion == 4) listar_vehiculos();
-                break;
-            case 2:
-                gestionar_costos_combustible();
-                break;
-            case 3:
-                calcular_costo_viaje();
-                break;
-            case 4:
-                guardar_datos_vehiculos();
-                break;
-            default:
-                printf("Opcion no valida. Intente de nuevo.\n");
+        switch (opcion)
+        {
+        case 1:
+            limpiar_pantalla();
+            printf("\n--- GESTION DE VEHICULOS ---\n");
+            printf("1. Crear Vehiculo\n");
+            printf("2. Borrar Vehiculo\n");
+            printf("3. Modificar Vehiculo\n");
+            printf("4. Listar Vehiculos\n");
+            printf("Seleccione una opcion: ");
+            scanf("%d", &opcion);
+            limpiar_buffer();
+            if (opcion == 1) crear_vehiculo();
+            else if (opcion == 2) borrar_vehiculo();
+            else if (opcion == 3) modificar_vehiculo();
+            else if (opcion == 4) listar_vehiculos();
+            break;
+        case 2:
+            gestionar_costos_combustible();
+            break;
+        case 3:
+            calcular_costo_viaje();
+            break;
+        case 4:
+            guardar_datos_vehiculos();
+            break;
+        default:
+            printf("Opcion no valida. Intente de nuevo.\n");
         }
-        if (opcion != 4) {
+        if (opcion != 4)
+        {
             printf("\nPresione ENTER para continuar...");
             limpiar_buffer();
         }
-    } while (opcion != 4);
+    }
+    while (opcion != 4);
 }
 
 // --- Función Principal ---
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     cargar_datos_vehiculos();
     menu_principal();
-    if (vehiculos != NULL) {
+    if (vehiculos != NULL)
+    {
         free(vehiculos);
     }
     return 0;
